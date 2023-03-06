@@ -22,7 +22,7 @@ describe("common datamodel", () => {
 
     var identity = new DefaultAzureCredential();
 
-    var cdm = new CommonDataModelWriter(datalakeName, "gist/test", identity);
+    var cdm = new CommonDataModelWriter(datalakeName, datalakePath, identity);
 
     await cdm.authenticate();
     cdm.mount();
@@ -30,7 +30,9 @@ describe("common datamodel", () => {
     var manifest: CdmManifestDefinition = await cdm.newManifest();
 
     var doc: CdmDocumentDefinition = cdm.addEntityDoc(entityName);
-    doc.imports.push("cdm:/foundations.cdm.json"); // if i comment this line the trait is added with the expected format
+    // if i comment these line the trait is added with the expected format
+    doc.imports.push("cdm:/foundations.cdm.json");
+    doc.imports.push("cdm:/primitives.cdm.json");
 
     var entity: CdmEntityDefinition = cdm.addEntity(entityName, doc, manifest);
     var attributeDef: CdmTypeAttributeDefinition =
